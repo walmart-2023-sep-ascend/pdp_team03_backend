@@ -1,17 +1,10 @@
 package com.ascend.capstone.pdp.controller;
 
-import com.ascend.capstone.pdp.entity.ERole;
-import com.ascend.capstone.pdp.entity.Role;
-import com.ascend.capstone.pdp.entity.User;
-import com.ascend.capstone.pdp.payload.request.LoginRequest;
-import com.ascend.capstone.pdp.payload.request.SignupRequest;
-import com.ascend.capstone.pdp.payload.response.MessageResponse;
-import com.ascend.capstone.pdp.payload.response.UserInfoResponse;
-import com.ascend.capstone.pdp.repo.RoleRepository;
-import com.ascend.capstone.pdp.repo.UserRepository;
-import com.ascend.capstone.pdp.security.jwt.JwtUtils;
-import com.ascend.capstone.pdp.service.impl.UserDetailsImpl;
-import jakarta.validation.Valid;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +15,29 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.ascend.capstone.pdp.entity.ERole;
+import com.ascend.capstone.pdp.entity.Role;
+import com.ascend.capstone.pdp.entity.User;
+import com.ascend.capstone.pdp.payload.request.LoginRequest;
+import com.ascend.capstone.pdp.payload.request.SignupRequest;
+import com.ascend.capstone.pdp.payload.response.MessageResponse;
+import com.ascend.capstone.pdp.payload.response.UserInfoResponse;
+import com.ascend.capstone.pdp.repo.RoleRepository;
+//import com.ascend.capstone.pdp.repo.RoleRepository;
+import com.ascend.capstone.pdp.repo.UserRepository;
+import com.ascend.capstone.pdp.security.jwt.JwtUtils;
+import com.ascend.capstone.pdp.service.impl.UserDetailsImpl;
+
+import jakarta.validation.Valid;
 
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:9100/",allowCredentials = "true", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -64,17 +71,19 @@ public class AuthController {
     ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
     @SuppressWarnings("unused")
-	List<String> roles = userDetails.getAuthorities().stream()
+    List<String> roles = userDetails.getAuthorities().stream()
             .map(item -> item.getAuthority())
             .collect(Collectors.toList());
 
     logger.info("Login successful !!");
 
-    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+    return ResponseEntity.ok()
+            //.header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
             .body(new UserInfoResponse(userDetails.getUserId(),
                     userDetails.getUsername(),
-                    userDetails.getEmail()/*,
-                    roles*/));
+                    userDetails.getEmail(),
+                    jwtCookie.toString().split(";")[0].split("=")[1])
+            );
 
   }
 
@@ -103,7 +112,7 @@ public class AuthController {
 
 
 
-        User user = new User(signUpRequest.getUsername(),
+    User user = new User(signUpRequest.getUsername(),
             signUpRequest.getEmail(),
             encoder.encode(signUpRequest.getPassword()),
             signUpRequest.getNamee(),
@@ -115,38 +124,38 @@ public class AuthController {
 
     Set<String> strRoles = signUpRequest.getRoles();
     Set<Role> roles = new HashSet<>();
-      strRoles.forEach(role -> {
-        switch (role) {
-          case "admin":
-            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
+    strRoles.forEach(role -> {
+      switch (role) {
+        case "admin":
+          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          roles.add(adminRole);
 
-            break;
-          case "guest":
-            Role modRole = roleRepository.findByName(ERole.ROLE_GUEST)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(modRole);
+          break;
+        case "guest":
+          Role modRole = roleRepository.findByName(ERole.ROLE_GUEST)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          roles.add(modRole);
 
-            break;
-          default:
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        }
-      });
-
-
-
-
-      if(userRepository.max()!=null) {
-        user.setUserId(userRepository.max()+1); // fetch the max count and insert into cart
-        logger.info("UserID: New UserID created !");
+          break;
+        default:
+          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          roles.add(userRole);
       }
-      else {
-        logger.info("UserID: First UserID created !");
-        user.setUserId(1);
-      }
+    });
+
+
+
+
+    if(userRepository.max()!=null) {
+      user.setUserId(userRepository.max()+1); // fetch the max count and insert into cart
+      logger.info("UserID: New UserID created !");
+    }
+    else {
+      logger.info("UserID: First UserID created !");
+      user.setUserId(1);
+    }
 
 
     user.setRoles(roles);
@@ -158,4 +167,4 @@ public class AuthController {
     return ResponseEntity.ok(new MessageResponse("User registered successfully !!!"));
   }
 
- }
+}

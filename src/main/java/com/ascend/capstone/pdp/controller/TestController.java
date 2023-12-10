@@ -1,8 +1,4 @@
 package com.ascend.capstone.pdp.controller;
-
-import com.ascend.capstone.pdp.payload.response.MessageResponse;
-import com.ascend.capstone.pdp.payload.response.UserInfoResponse;
-import com.ascend.capstone.pdp.service.impl.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +9,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ascend.capstone.pdp.payload.response.MessageResponse;
+import com.ascend.capstone.pdp.payload.response.UserInfoResponse;
+import com.ascend.capstone.pdp.service.impl.UserDetailsImpl;
+import com.ascend.capstone.pdp.controller.AuthController;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -72,7 +73,6 @@ public class TestController {
             .body(new UserInfoResponse(
                     userDetails.getUserId(),
                     userDetails.getUsername(),
-                    userDetails.getEmail()/*,
-                    userDetails.getName()*/));
+                    userDetails.getEmail(),null));
   }
 }

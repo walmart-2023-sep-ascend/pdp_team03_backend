@@ -4,11 +4,21 @@ public class UserInfoResponse {
     private Integer userId;
     private String username;
     private String email;
+    private String jwtcookie;
 
-    public UserInfoResponse(Integer userId, String username, String email/*,Namee name*//*, List<String> roles*/) {
+    public UserInfoResponse(Integer userId, String username, String email,String jwtcookie) {
         this.userId = userId;
         this.username = username;
         this.email = email;
+        this.jwtcookie = jwtcookie;
+    }
+
+    public String getJwtcookie() {
+        return jwtcookie;
+    }
+
+    public void setJwtcookie(String jwtcookie) {
+        this.jwtcookie = jwtcookie;
     }
 
     public String getEmail() {
