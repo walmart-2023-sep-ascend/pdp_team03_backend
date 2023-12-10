@@ -80,10 +80,6 @@ public class ProductController {
     }
 
     @PostMapping("/addwishlist")
-    //public Wishlist insert_wishlist(@RequestBody Wishlist wishlist){
-    //   return wishlistservice.addlist(wishlist);
-
-    // }
     public ResponseEntity<Object> insert_wishlist(@RequestBody Wishlist wishlist){
         try {
             wishlistservice.addlist(wishlist);
@@ -95,15 +91,9 @@ public class ProductController {
 
 
     @DeleteMapping("/deletewishlist")
-    //public Wishlist delete_wishlist(@PathVariable int id){
-
-    //  return  wishlistservice.deleteProduct(id);
-    //}
-
-
     public ResponseEntity<Object> delete_wishlist(@RequestBody Wishlist wishlist){
         try {
-            //wishlistservice.deleteProduct(wishlist);
+            wishlistservice.deleteProduct(wishlist);
             return ResponseHandler.generateResponse("Deleted from Wishlist!", HttpStatus.OK, wishlistservice.deleteProduct(wishlist));
         } catch (Exception e) {
             return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
