@@ -15,7 +15,7 @@ pipeline {
         stage('dockerBuild') {
             steps {
                 script {
-                    bat 'docker build -f Dockerfile -t harshinisuresh/pdpteam03backend .'
+                    bat 'docker build -f Dockerfile -t harshinisuresh/pdpteam03backenddocker .'
                 }
 
             }
@@ -26,7 +26,7 @@ pipeline {
 
                     script {
                         bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
-                        bat 'docker push harshinisuresh/pdpteam03backend:latest'
+                        bat 'docker push harshinisuresh/pdpteam03backenddocker:latest'
                 }
                     }
             }
