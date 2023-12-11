@@ -1,8 +1,8 @@
 package com.ascend.capstone.pdp.service;
 
-import com.ascend.capstone.pdp.entity.Wishlist;
-
 import java.util.List;
+
+import com.ascend.capstone.pdp.entity.Wishlist;
 
 public interface WishlistService {
 
@@ -10,9 +10,6 @@ public interface WishlistService {
 
 	public Wishlist addlist(Wishlist wishlist);
 
-    public Wishlist deleteProduct(Wishlist wishlist );
+	public Wishlist deleteProduct(Wishlist wishlist );
 
-   // public Wishlist updateProduct(int id , Wishlist wishlist);
-
-   // public Wishlist getProductById(int id);	
 }

@@ -40,8 +40,6 @@ public class ProductServiceTest {
         ).collect(Collectors.toList()));
         assertEquals(1, productServiceImpl.getProducts().size());
     }
-
-
     @Test
     void testgetProductbyId() throws Exception{
         Optional<Product> product = Optional.of(new Product(102,"The Pop Shoppe - Grape",54, "Female","http://dummyimage.com/125x100.png/cc0000/ffffff", "short description of product 101","Integer tinc_idunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
@@ -52,8 +50,6 @@ public class ProductServiceTest {
         Optional<Product> productresponse = Optional.of(productServiceImpl.getProductById(102));
         assertEquals(102,  productresponse.get().getId());
     }
-
-
     @Test
      void testFindByText()
     {

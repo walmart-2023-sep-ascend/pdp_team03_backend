@@ -37,7 +37,7 @@ import com.ascend.capstone.pdp.service.impl.UserDetailsImpl;
 import jakarta.validation.Valid;
 
 
-@CrossOrigin(origins = "http://localhost:9100/",allowCredentials = "true", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:9100/","http://ascend-pgp-team2.eastus.cloudapp.azure.com:9100"},allowCredentials = "true", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

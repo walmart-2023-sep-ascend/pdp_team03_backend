@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:9100/","http://ascend-pgp-team2.eastus.cloudapp.azure.com:9100"},allowCredentials = "true", maxAge = 3600)
 @Controller
 @RestController
 @RequestMapping("/api/auth")

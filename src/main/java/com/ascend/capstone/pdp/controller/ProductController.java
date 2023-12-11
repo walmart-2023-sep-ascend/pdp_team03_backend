@@ -78,33 +78,4 @@ public class ProductController {
     public List<Product> search(@PathVariable String text){
         return srepo.findByText(text);
     }
-
-    @PostMapping("/addwishlist")
-    public ResponseEntity<Object> insert_wishlist(@RequestBody Wishlist wishlist){
-        try {
-            wishlistservice.addlist(wishlist);
-            return ResponseHandler.generateResponse("Added to Wishlist!", HttpStatus.OK, wishlistservice.addlist(wishlist));
-        } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-    }
-
-
-    @DeleteMapping("/deletewishlist")
-    public ResponseEntity<Object> delete_wishlist(@RequestBody Wishlist wishlist){
-        try {
-            wishlistservice.deleteProduct(wishlist);
-            return ResponseHandler.generateResponse("Deleted from Wishlist!", HttpStatus.OK, wishlistservice.deleteProduct(wishlist));
-        } catch (Exception e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-    }
-
-
-    @GetMapping("/wishlistall/{user}")
-    public List<Wishlist> getWishlist(@PathVariable String user) {
-        return  wishlistservice.getlist(user);
-
-
-    }
 }
