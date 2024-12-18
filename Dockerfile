@@ -6,6 +6,7 @@ COPY target/pdpteam03backend-0.0.1-snapshot.jar /pdpteam03backenddocker.jar
 ENTRYPOINT ["java", "-jar", "/pdpteam03backenddocker.jar"]
 #when you run the image the jar file mentioned above will run
 
+# appended for testing from naveen 
 
 #FROM openjdk:latest
 #EXPOSE 9010
